@@ -1,5 +1,15 @@
 #include <iostream>
 using namespace std;
+struct Node{
+    int data;
+    Node* next;
+};
+int *stackArr;
+int capacity;
+int top = -1;
+Node* front= nullptr;
+Node* rear= nullptr;
+int currsize=0; 
 void Array();
 void Stack();
 void Queue();
@@ -67,20 +77,16 @@ void Array() {
   delete[] arr;
 }
 
-void push() {}
-void pop() {}
-void peek() {}
-
-void enqueue() {}
-void dequeue() {}
-void display_queue() {}
-
 void insert_ll() {}
 void delete_ll() {}
 void traverse_ll() {}
 void Stack() {
     int choice;
     bool running= true;
+    cout<<"Enter stack capacity:\n";
+    cin>>capacity;
+    stackArr= new int[capacity];
+    top=-1;
     while (running){
     cout<< "Please select operation:\n1. Push\n2. Pop\n3. Peek\n4. Exit\n";
     cin>>choice;
@@ -97,8 +103,11 @@ void Stack() {
            break;
     }
     }
+    delete[] stackArr;
 }
 void Queue() {
+    front = rear = nullptr;
+    currsize= 0;
     int choice;
     bool running= true;
     while (running){
@@ -169,8 +178,75 @@ cout<<"Element Deleted\n";
 }
 void display_arr(int arr[], int &n) {
 for (int i=0;i<n;i++){
-    cout<<arr[i]<<"\t";
+    cout<<arr[i]<<" ";
 }
 cout<<"\n";
 }
-
+void push() {
+int x;
+if (top == capacity - 1){
+    cout<<"Stack overflow.\n";
+    return;
+}
+cout<<"Enter element to push\n";
+cin>>x;
+stackArr[++top]=x;
+cout<<"Element pushed.\n";
+}
+void pop() {
+if(top==-1){
+    cout<<"Stack Underflow.\n";
+    return;
+}
+cout<<"Element popped.\n"<< stackArr[top--]<<endl;
+}
+void peek() {
+if (top==-1){
+    cout<<"Stack is empty.\n";
+    return;
+}
+cout<<"Top element:"<<stackArr[top]<<endl;
+}
+void enqueue() {
+int x;
+cout<<"Enter element to enqueue:\n";
+cin>>x;
+Node* node = new Node;
+node->data = x;
+node->next= nullptr;
+if (front==nullptr){
+    front=rear=node;
+}
+else {
+    rear->next=node;
+    rear=node;
+}
+currsize++;
+cout<<"Element inserted.\n";
+}
+void dequeue() {
+if (front == nullptr){
+    cout<<"Queue underflow.\n";
+    return;
+}
+Node *temp= front;
+cout<<"Removed element:"<<temp->data<<endl;
+front = front->next;
+if (front==nullptr){
+    rear=nullptr;
+}
+delete temp;
+currsize--;
+}
+void display_queue() {
+if (front == nullptr){
+    cout<<"Queue is empty.\n";
+    return;
+}
+Node* temp = front;
+while(temp != nullptr){
+    cout<<temp->data<<" ";
+    temp = temp->next;
+}
+cout<<endl;
+}
